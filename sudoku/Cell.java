@@ -7,12 +7,14 @@
  * 2 - 5026231101 - Muhammad Akmal Rafiansyah
  * 3 - 5026231042 - Ervina Anggraini
  */
-
 package sudoku;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  * The Cell class models the cells of the Sudoku puzzle, by customizing (subclass)
@@ -39,6 +41,7 @@ public class Cell extends JTextField {
     int number;
     /** The status of this cell defined in enum CellStatus */
     CellStatus status;
+    boolean wasCorrect = false;
 
     /** Constructor */
     public Cell(int row, int col) {
@@ -48,12 +51,31 @@ public class Cell extends JTextField {
         // Inherited from JTextField: Beautify all the cells once for all
         super.setHorizontalAlignment(JTextField.CENTER);
         super.setFont(FONT_NUMBERS);
+
+        // Add KeyListener to handle input without needing ENTER key
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char keyChar = e.getKeyChar();
+                
+                // Process input only if it's a digit between 1-9
+                if (Character.isDigit(keyChar) && keyChar >= '1' && keyChar <= '9') {
+                    setText(String.valueOf(keyChar));  // Set the number typed in the cell
+                    e.consume();  // Prevent JTextField from adding the character again
+                    checkAnswer();  // Directly check if the input is correct or not
+                } else {
+                    // Ignore invalid input or non-numeric keys
+                    e.consume();  // Prevent the event from propagating
+                }
+            }
+        });
     }
 
     /** Reset this cell for a new game, given the puzzle number and isGiven */
     public void newGame(int number, boolean isGiven) {
         this.number = number;
         status = isGiven ? CellStatus.GIVEN : CellStatus.TO_GUESS;
+        wasCorrect = false;
         paint();    // paint itself
     }
 
@@ -77,7 +99,25 @@ public class Cell extends JTextField {
             super.setBackground(BG_HINT);  // Gunakan warna hijau untuk hint
         }
     }
-    
+
+    /** Check if the user's input is correct or not */
+    public void checkAnswer() {
+        if (Integer.parseInt(getText()) == number) {
+            if (!wasCorrect) {
+                wasCorrect = true;  // Mark as correct
+                ((SudokuMain) SwingUtilities.getWindowAncestor(this)).updateScore(10);  // Add score for correct answer
+            }
+            status = CellStatus.CORRECT_GUESS;  // Correct guess
+        } else {
+            if (wasCorrect) {
+                wasCorrect = false;  // Mark as incorrect if previously correct
+                ((SudokuMain) SwingUtilities.getWindowAncestor(this)).updateScore(-10);  // Subtract score for incorrect answer
+            }
+            status = CellStatus.WRONG_GUESS;    // Incorrect guess
+        }
+        paint();  // Repaint the cell based on the updated status
+    }
+
     public void clearConflictHighlight() {
         // Restore the original background if there is no conflict
         if (status == CellStatus.GIVEN) {
@@ -92,5 +132,5 @@ public class Cell extends JTextField {
             setForeground(FG_NOT_GIVEN);
         }
     }
-    
 }
+

@@ -13,6 +13,7 @@ public class SudokuMain extends JFrame {
     JButton btnNewGame = new JButton("New Game");
     JButton btnHint = new JButton("Hint");  // New button for Hint
     JButton btnReset = new JButton("Reset");  // New button for Reset
+    JComboBox<String> difficultyComboBox = new JComboBox<>(new String[]{"Easy", "Medium", "Hard"});  // Difficulty ComboBox
 
     public SudokuMain() {
         // Set up the container and main layout
@@ -27,13 +28,18 @@ public class SudokuMain extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));  // Align buttons horizontally
         buttonPanel.add(btnNewGame);
         buttonPanel.add(btnReset);  // Add the Reset button beside New Game
+        buttonPanel.add(difficultyComboBox);  // Add the Difficulty ComboBox
         cp.add(buttonPanel, BorderLayout.SOUTH);
 
         // Add the Hint button to the North
         cp.add(btnHint, BorderLayout.NORTH);
 
         // Add action listener for the "New Game" button
-        btnNewGame.addActionListener(e -> board.newGame());
+        btnNewGame.addActionListener(e -> {
+            String selectedDifficulty = (String) difficultyComboBox.getSelectedItem();
+            int numClues = getClueCountForDifficulty(selectedDifficulty);
+            board.newGame(numClues);  // Start a new game with the selected difficulty
+        });
 
         // Add action listener for the "Hint" button
         btnHint.addActionListener(e -> board.giveHint());  // Call the giveHint method on the board when pressed
@@ -41,7 +47,9 @@ public class SudokuMain extends JFrame {
         // Add action listener for the "Reset" button
         btnReset.addActionListener(e -> resetGame());  // Call the resetGame method when pressed
 
-        board.newGame();  // Start the game by calling newGame() on the board
+        // Set default difficulty and start the game
+        difficultyComboBox.setSelectedIndex(1);  // Default to "Medium"
+        board.newGame(getClueCountForDifficulty("Medium"));  // Start with a medium difficulty puzzle
 
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,6 +69,16 @@ public class SudokuMain extends JFrame {
                     cell.paint();  // Repaint the cell based on the updated status
                 }
             }
+        }
+    }
+
+    // Function to return number of clues based on difficulty
+    private int getClueCountForDifficulty(String difficulty) {
+        switch (difficulty) {
+            case "Easy": return 35;  // More clues, easier
+            case "Medium": return 25; // Moderate
+            case "Hard": return 15;   // Fewer clues, harder
+            default: return 25;
         }
     }
 

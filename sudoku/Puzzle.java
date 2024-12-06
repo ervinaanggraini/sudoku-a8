@@ -46,7 +46,6 @@ public class Puzzle {
 
         // Step 3: Calculate how many cells need to be removed
         int cellsToRemove = totalCells - cellsToGuess;
-        int removedCells = 0;
 
         // Array of indices to store the grid cells
         int[] indices = new int[totalCells];
@@ -63,7 +62,6 @@ public class Puzzle {
             int row = index / SudokuConstants.GRID_SIZE;
             int col = index % SudokuConstants.GRID_SIZE;
             isGiven[row][col] = false; // Mark the cell as empty (remove the clue)
-            removedCells++;
         }
     }
 

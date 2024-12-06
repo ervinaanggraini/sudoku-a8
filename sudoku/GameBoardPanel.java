@@ -2,6 +2,7 @@ package sudoku;
 
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
@@ -48,16 +49,16 @@ public class GameBoardPanel extends JPanel {
     /**
      * Start a new game and reset the board based on the puzzle.
      */
-    public void newGame() {
-        puzzle.newPuzzle(25);  // Generate a new puzzle
-
+    public void newGame(int numClues) {
+        puzzle.newPuzzle(numClues);  // Adjust puzzle generation based on selected difficulty
+    
         // Initialize all cells based on the puzzle data
         for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
             for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
                 cells[row][col].newGame(puzzle.numbers[row][col], puzzle.isGiven[row][col]);
             }
         }
-    }
+    }    
 
     /**
      * Reset the game to its initial state.

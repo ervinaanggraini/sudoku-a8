@@ -103,12 +103,14 @@ public class Cell extends JTextField {
     /** Check if the user's input is correct or not */
     public void checkAnswer() {
         if (Integer.parseInt(getText()) == number) {
+            SoundEffect.playSound("true.wav");
             if (!wasCorrect) {
                 wasCorrect = true;  // Mark as correct
                 ((SudokuMain) SwingUtilities.getWindowAncestor(this)).updateScore(10);  // Add score for correct answer
             }
             status = CellStatus.CORRECT_GUESS;  // Correct guess
         } else {
+            SoundEffect.playSound("wrong.wav");
             if (wasCorrect) {
                 wasCorrect = false;  // Mark as incorrect if previously correct
                 ((SudokuMain) SwingUtilities.getWindowAncestor(this)).updateScore(-10);  // Subtract score for incorrect answer

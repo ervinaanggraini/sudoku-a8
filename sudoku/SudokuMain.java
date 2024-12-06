@@ -1,3 +1,12 @@
+/**
+ * ES234317-Algorithm and Data Structures
+ * Semester Ganjil, 2024/2025
+ * Group Capstone Project
+ * Group #1
+ * 1 - 5026231078 - Hilman Mumtaz Sya`bani
+ * 2 - 5026231101 - Muhammad Akmal Rafiansyah
+ * 3 - 5026231042 - Ervina Anggraini
+ */
 package sudoku;
 
 import java.awt.*;
@@ -33,6 +42,10 @@ public class SudokuMain extends JFrame {
 
         // Add the Hint button to the North
         cp.add(btnHint, BorderLayout.NORTH);
+
+        // Change the background color of the Hint button to green
+        btnHint.setBackground(new Color(0, 255, 0));  // Set to green
+        btnHint.setForeground(Color.BLACK);  // Change text color to black for better visibility
 
         // Add action listener for the "New Game" button
         btnNewGame.addActionListener(e -> {

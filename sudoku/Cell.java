@@ -22,13 +22,15 @@ public class Cell extends JTextField {
     private static final long serialVersionUID = 1L;  // to prevent serial warning
 
     // Define named constants for JTextField's colors and fonts
-    public static final Color BG_GIVEN = new Color(240, 240, 240); // RGB
-    public static final Color FG_GIVEN = Color.BLACK;
-    public static final Color FG_NOT_GIVEN = Color.GRAY;
-    public static final Color BG_TO_GUESS  = Color.YELLOW;
+    public static final Color BG_GIVEN = new Color(0, 0, 90); // RGB
+    public static final Color FG_GIVEN = new Color(216, 216, 216);
+    public static final Color FG_NOT_GIVEN = Color.white;
+    public static final Color BG_TO_GUESS  = new Color(45, 50, 180); 
     public static final Color BG_CORRECT_GUESS = new Color(0, 216, 0);
     public static final Color BG_WRONG_GUESS   = new Color(216, 0, 0);
     public static final Font FONT_NUMBERS = new Font("OCR A Extended", Font.PLAIN, 28);
+    public static final Color BG_HINT = new Color(0, 255, 0);  // Warna hijau terang untuk hint
+
 
     // Define properties (package-visible)
     /** The row and column number [0-8] of this cell */
@@ -58,23 +60,24 @@ public class Cell extends JTextField {
     /** This Cell (JTextField) paints itself based on its status */
     public void paint() {
         if (status == CellStatus.GIVEN) {
-            // Inherited from JTextField: Set display properties
             super.setText(number + "");
             super.setEditable(false);
             super.setBackground(BG_GIVEN);
             super.setForeground(FG_GIVEN);
         } else if (status == CellStatus.TO_GUESS) {
-            // Inherited from JTextField: Set display properties
             super.setText("");
             super.setEditable(true);
             super.setBackground(BG_TO_GUESS);
             super.setForeground(FG_NOT_GIVEN);
-        } else if (status == CellStatus.CORRECT_GUESS) {  // from TO_GUESS
+        } else if (status == CellStatus.CORRECT_GUESS) {
             super.setBackground(BG_CORRECT_GUESS);
-        } else if (status == CellStatus.WRONG_GUESS) {    // from TO_GUESS
+        } else if (status == CellStatus.WRONG_GUESS) {
             super.setBackground(BG_WRONG_GUESS);
+        } else if (status == CellStatus.HINT) {  // Tambahkan pengecekan status HINT
+            super.setBackground(BG_HINT);  // Gunakan warna hijau untuk hint
         }
     }
+    
     public void clearConflictHighlight() {
         // Restore the original background if there is no conflict
         if (status == CellStatus.GIVEN) {
@@ -89,4 +92,5 @@ public class Cell extends JTextField {
             setForeground(FG_NOT_GIVEN);
         }
     }
+    
 }

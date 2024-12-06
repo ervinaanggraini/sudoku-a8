@@ -139,8 +139,6 @@ public class SudokuMain extends JFrame {
         timerLabel.setText(String.format("Time: %02d:%02d:%02d", hours, minutes, seconds));
     }
     
-    public static void main(String[] args) {
-        new SudokuMain();
-    }
+
 }
 

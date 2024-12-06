@@ -1,19 +1,9 @@
-/**
- * ES234317-Algorithm and Data Structures
- * Semester Ganjil, 2024/2025
- * Group Capstone Project
- * Group #1
- * 1 - 5026231078 - Hilman Mumtaz Sya`bani
- * 2 - 5026231101 - Muhammad Akmal Rafiansyah
- * 3 - 5026231042 - Ervina Anggraini
- */
-
-
 package sudoku;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.event.ActionListener;
+
 
 /**
  * The game board consisting of 9x9 Sudoku cells.
@@ -59,7 +49,7 @@ public class GameBoardPanel extends JPanel {
      * Start a new game and reset the board based on the puzzle.
      */
     public void newGame() {
-        puzzle.newPuzzle(2);  // Generate a new puzzle
+        puzzle.newPuzzle(25);  // Generate a new puzzle
 
         // Initialize all cells based on the puzzle data
         for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
@@ -70,18 +60,17 @@ public class GameBoardPanel extends JPanel {
     }
 
     /**
-     * TODO 5
-     * Check if the puzzle is solved.
+     * Reset the game to its initial state.
      */
-    public boolean isSolved() {
+    public void resetGame() {
+        puzzle.newPuzzle(25);  // Re-generate the puzzle to its original state
+
+        // Reset all cells to their initial state (given or empty)
         for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
             for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
-                if (cells[row][col].status == CellStatus.TO_GUESS || cells[row][col].status == CellStatus.WRONG_GUESS) {
-                    return false;
-                }
+                cells[row][col].newGame(puzzle.numbers[row][col], puzzle.isGiven[row][col]);
             }
         }
-        return true;
     }
 
     // [TODO 2] Define the listener class for editable cells
@@ -113,7 +102,20 @@ public class GameBoardPanel extends JPanel {
     }
 
     /**
-     * TODO 6
+     * Check if the puzzle is solved.
+     */
+    public boolean isSolved() {
+        for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
+            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
+                if (cells[row][col].status == CellStatus.TO_GUESS || cells[row][col].status == CellStatus.WRONG_GUESS) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Provide a hint by filling an empty editable cell with the correct value.
      */
     public void giveHint() {
@@ -134,4 +136,8 @@ public class GameBoardPanel extends JPanel {
         // If no hint is available, show a message
         JOptionPane.showMessageDialog(null, "No more hints available!");
     }
+    public Cell getCell(int row, int col) {
+        return cells[row][col];
+    }    
 }
+

@@ -75,4 +75,18 @@ public class Cell extends JTextField {
             super.setBackground(BG_WRONG_GUESS);
         }
     }
+    public void clearConflictHighlight() {
+        // Restore the original background if there is no conflict
+        if (status == CellStatus.GIVEN) {
+            setBackground(BG_GIVEN);
+        } else if (status == CellStatus.TO_GUESS) {
+            setBackground(BG_TO_GUESS);
+        }
+        // The text color should also be updated when conflict is cleared
+        if (status == CellStatus.GIVEN) {
+            setForeground(FG_GIVEN);
+        } else if (status == CellStatus.TO_GUESS) {
+            setForeground(FG_NOT_GIVEN);
+        }
+    }
 }

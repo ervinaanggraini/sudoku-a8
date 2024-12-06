@@ -17,6 +17,9 @@ import javax.swing.*;
  */
 public class SudokuMain extends JFrame {
     private static final long serialVersionUID = 1L;
+    private JLabel timerLabel = new JLabel("Time: 00:00:00");
+    private Timer gameTimer;
+    private long startTime;
 
     GameBoardPanel board = new GameBoardPanel();
     JButton btnNewGame = new JButton("New Game");
@@ -74,6 +77,21 @@ public class SudokuMain extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Sudoku");
         setVisible(true);
+
+        // Atur label timer untuk ditampilkan di bagian atas antarmuka
+        timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        cp.add(timerLabel, BorderLayout.NORTH);
+        
+        // Buat dan mulai timer
+        gameTimer = new Timer(1000, e -> updateTimer());
+        startTime = System.currentTimeMillis(); 
+        gameTimer.start(); 
+        
+        // Hentikan timer saat puzzle selesai
+        if (board.isSolved()) {
+            gameTimer.stop(); 
+            JOptionPane.showMessageDialog(this, "Congratulations! You solved the puzzle in " + timerLabel.getText()); 
+        }
     }
 
     // Method to reset the game and clear user inputs
@@ -108,6 +126,19 @@ public class SudokuMain extends JFrame {
         lblScore.setText("Score: " + score);  // Update the score label
     }
 
+    //method untuk memperbarui timer
+    private void updateTimer() {
+        long elapsed = System.currentTimeMillis() - startTime; // Hitung waktu berlalu dalam milidetik
+
+        // Konversi waktu berlalu menjadi jam, menit, dan detik
+        long seconds = (elapsed / 1000) % 60; 
+        long minutes = (elapsed / (1000 * 60)) % 60; 
+        long hours = elapsed / (1000 * 60 * 60); 
+
+        // Perbarui teks pada label timer
+        timerLabel.setText(String.format("Time: %02d:%02d:%02d", hours, minutes, seconds));
+    }
+    
     public static void main(String[] args) {
         new SudokuMain();
     }

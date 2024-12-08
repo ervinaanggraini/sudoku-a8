@@ -51,7 +51,8 @@ public class SudokuMain extends JFrame {
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         northPanel.add(btnHint);
-        northPanel.add(lblScore);  // Display score on the UI
+        northPanel.add(timerLabel);
+        northPanel.add(lblScore);
         cp.add(northPanel, BorderLayout.NORTH);
 
         // Add action listener for the "New Game" button
@@ -78,9 +79,9 @@ public class SudokuMain extends JFrame {
         setTitle("Sudoku");
         setVisible(true);
 
-        // Atur label timer untuk ditampilkan di bagian atas antarmuka
-        timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        cp.add(timerLabel, BorderLayout.NORTH);
+        // // Atur label timer untuk ditampilkan di bagian atas antarmuka
+        // timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // cp.add(timerLabel, BorderLayout.NORTH);
         
         // Buat dan mulai timer
         gameTimer = new Timer(1000, e -> updateTimer());

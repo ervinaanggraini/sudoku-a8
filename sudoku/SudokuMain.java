@@ -88,7 +88,11 @@ public class SudokuMain extends JFrame {
         startTime = System.currentTimeMillis(); 
         gameTimer.start(); 
         
-        
+        // Hentikan timer saat puzzle selesai
+        if (board.isSolved()) {
+            gameTimer.stop(); 
+            JOptionPane.showMessageDialog(this, "Congratulations! You solved the puzzle in " + timerLabel.getText()); 
+        }
     }
 
     // Method to reset the game and clear user inputs
@@ -134,12 +138,6 @@ public class SudokuMain extends JFrame {
 
         // Perbarui teks pada label timer
         timerLabel.setText(String.format("Time: %02d:%02d:%02d", hours, minutes, seconds));
-    }
-    
-    // Hentikan timer saat puzzle selesai
-    if (board.isSolved()) {
-        gameTimer.stop(); 
-        JOptionPane.showMessageDialog(this, "Congratulations! You solved the puzzle in " + timerLabel.getText()); 
     }
 }
 

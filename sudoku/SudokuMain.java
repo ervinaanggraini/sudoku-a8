@@ -80,8 +80,8 @@ public class SudokuMain extends JFrame {
         setVisible(true);
 
         // // Atur label timer untuk ditampilkan di bagian atas antarmuka
-        // timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        // cp.add(timerLabel, BorderLayout.NORTH);
+        timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        cp.add(timerLabel, BorderLayout.NORTH);
         
         // Buat dan mulai timer
         gameTimer = new Timer(1000, e -> updateTimer());
